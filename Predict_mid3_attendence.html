@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Space Attendance Predictor</title>
+
+<style>
+body {
+margin: 0;
+font-family: 'Segoe UI', sans-serif;
+overflow: hidden;
+background: radial-gradient(circle at bottom, #0f2027, #203a43, #2c5364);
+height: 100vh;
+}
+
+/* Twinkling stars */
+.stars span {
+position: absolute;
+width: 2px;
+height: 2px;
+background: white;
+animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+from { opacity: 0.3; }
+to { opacity: 1; }
+}
+
+/* Floating particles */
+.particle {
+position: absolute;
+width: 4px;
+height: 4px;
+background: rgba(255,255,255,0.6);
+border-radius: 50%;
+animation: float 10s linear infinite;
+}
+
+@keyframes float {
+from { transform: translateY(100vh); }
+to { transform: translateY(-10vh); }
+}
+
+/* Shooting Star */
+.shooting-star {
+position: absolute;
+width: 120px;
+height: 2px;
+background: linear-gradient(90deg, white, transparent);
+transform: rotate(-45deg);
+animation: shoot 1.2s ease-out forwards;
+}
+
+@keyframes shoot {
+0% {
+opacity: 1;
+transform: translate(0,0) rotate(-45deg);
+}
+100% {
+opacity: 0;
+transform: translate(-600px, 600px) rotate(-45deg);
+}
+}
+
+/* Glass Card */
+.container {
+position: relative;
+z-index: 10;
+width: 380px;
+margin: auto;
+top: 50%;
+transform: translateY(-50%);
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(15px);
+padding: 40px;
+border-radius: 20px;
+box-shadow: 0 0 30px rgba(255,255,255,0.2);
+text-align: center;
+color: white;
+}
+
+h2 {
+margin-bottom: 20px;
+}
+
+input {
+width: 95%;
+padding: 12px;
+margin: 10px 0;
+border-radius: 10px;
+border: none;
+outline: none;
+}
+
+button {
+padding: 12px 20px;
+border: none;
+border-radius: 30px;
+background: white;
+color: #333;
+font-weight: bold;
+cursor: pointer;
+transition: 0.3s ease;
+}
+
+button:hover {
+transform: scale(1.1);
+box-shadow: 0 0 20px white;
+}
+
+#result {
+margin-top: 20px;
+font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+<h2>🚀 Space Attendance Predictor</h2>
+
+<input type="number" id="mid1" placeholder="Enter Mid 1 %">
+<input type="number" id="mid2" placeholder="Enter Mid 2 %">
+
+<button onclick="calculate()">Predict Mid 3</button>
+
+<div id="result"></div>
+</div>
+
+<script>
+
+// Generate background stars
+for(let i=0; i<150; i++){
+let star = document.createElement("span");
+star.style.top = Math.random() * 100 + "%";
+star.style.left = Math.random() * 100 + "%";
+star.style.animationDelay = Math.random() * 2 + "s";
+document.body.appendChild(star);
+}
+
+// Generate floating particles
+for(let i=0; i<25; i++){
+let particle = document.createElement("div");
+particle.className = "particle";
+particle.style.left = Math.random() * 100 + "%";
+particle.style.animationDuration = (6 + Math.random() * 6) + "s";
+document.body.appendChild(particle);
+}
+
+// Shooting star function
+function createShootingStar() {
+let star = document.createElement("div");
+star.className = "shooting-star";
+star.style.top = Math.random() * 50 + "%";
+star.style.left = Math.random() * 100 + "%";
+document.body.appendChild(star);
+
+setTimeout(() => {
+star.remove();
+}, 1200);
+}
+
+// Appear every 5–6 seconds
+setInterval(() => {
+createShootingStar();
+}, 5500);
+
+
+// Attendance calculation
+function calculate() {
+
+let m1 = parseFloat(document.getElementById("mid1").value);
+let m2 = parseFloat(document.getElementById("mid2").value);
+let resultDiv = document.getElementById("result");
+
+if (isNaN(m1) || isNaN(m2)) {
+resultDiv.innerHTML = "⚠ Please enter valid percentages!";
+return;
+}
+
+let total = m1 + m2;
+let requiredMid3 = 225 - total;
+let currentAverage = total / 2;
+
+if (requiredMid3 > 100) {
+resultDiv.innerHTML =
+"❌ Need " + requiredMid3.toFixed(2) +
+"% in Mid 3. Not possible.";
+}
+else if (requiredMid3 <= 0) {
+resultDiv.innerHTML =
+"🎉 Already secured 75% overall!";
+}
+else {
+resultDiv.innerHTML =
+"📊 Current Avg: " + currentAverage.toFixed(2) + "%<br>" +
+"🔥 Need <b>" + requiredMid3.toFixed(2) +
+"%</b> in Mid 3 to reach 75%.";
+}
+}
+</script>
+
+</body>
+</html>
